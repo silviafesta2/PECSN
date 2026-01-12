@@ -24,9 +24,7 @@ simple ClientStage
     parameters:
         int numClients = default(10);
         double requestMeanTime = default(10);
-        @signal[requestTime];
-		@statistic[requestTime](source=requestTime; record=vector);
+
     gates:
         output out;
-        input in;
 }

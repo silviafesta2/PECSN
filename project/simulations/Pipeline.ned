@@ -21,24 +21,24 @@ import project.SecondStage;
 import project.ThirdStage;
 
 
-//
-// Two instances (tic and toc) of Txc connected.
-//
+
 network Pipeline
 {
     @display("bgb=356,109");
     submodules:
         clients: ClientStage;
-        firstStage: FirstStage;
-        secondStage: SecondStage;
-        thirdStage: ThirdStage;
+        stage1: FirstStage;
+        stage2: SecondStage;
+        stage3: ThirdStage;
 
     connections:
-        clients.out --> firstStage.in;
-        firstStage.out --> secondStage.in;
-        secondStage.out --> thirdStage.in;
-        thirdStage.out --> secondStage.endReqIn;
-        secondStage.endReqOut --> firstStage.endReqIn;
-        firstStage.endReqOut --> clients.in;
+        clients.out --> stage1.in;
+        stage1.out --> stage2.in;
+        stage2.out --> stage3.in;
+
+        //Route completion from third stage to first stage
+        //Needed to update the state of the thread handling the request
+        stage3.out --> stage1.endReqIn;
+
 
 }

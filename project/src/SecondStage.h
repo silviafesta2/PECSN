@@ -17,9 +17,7 @@
 #define SECONDSTAGE_H_
 
 #include <omnetpp.h>
-#include <queue>
-#include <map>
-#include "RequestMessage_m.h"
+#include "PipelineMessage_m.h"
 
 using namespace omnetpp;
 
@@ -31,27 +29,27 @@ class SecondStage : public cSimpleModule
   protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);
-    virtual void handleEnd(RequestMessage* msg);
-    virtual void handleEndSecondStage(RequestMessage* msg);
-    virtual void handleSecondStage(RequestMessage* msg);
-    virtual void sendRequestMessage(const char* name, long requestId, int threadId, const char* gateName);
-    virtual void scheduleRequest(long requestId, int threadId);
+    virtual void handleSendToThirdStage(PipelineMessage* msg);
+    virtual void handleServe2(PipelineMessage* msg);
+    virtual void scheduleSecondStageProcessingCompletion(PipelineMessage* srcMsg);
     virtual simtime_t getServiceDelay(int threadId) const;
 
   private:
+    // Module parameters
     double meanServiceTime;
     double stdServiceTime;
     bool lognormalServiceTime;
+
+    // Supplementary data structures
     bool lock;
-    std::map<long, int> waitingRequest2ThreadId;
-    std::queue<double> waitingRequests;
-    std::unordered_map<long, simtime_t> requestId2arrivalTime;
-    simsignal_t queueSize;
-    simsignal_t partialRequestTime;
+    cQueue waitingRequests;
+
+    // Module statistic signals
+    simsignal_t queueSize2;
+    simsignal_t partialResponseTime2;
 };
 
 
 }; // namespace
 
 #endif
-

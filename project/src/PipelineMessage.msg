@@ -13,31 +13,14 @@
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 // 
 
-#ifndef THIRDSTAGE_H_
-#define THIRDSTAGE_H_
+namespace project;
 
-#include <omnetpp.h>
-#include "PipelineMessage_m.h"
 
-using namespace omnetpp;
-
-namespace project {
-
-class ThirdStage : public cSimpleModule
-{
-  protected:
-    virtual void initialize();
-    virtual void handleMessage(cMessage *msg);
-    virtual void handleSendBackToFirstStage(PipelineMessage* msg);
-    virtual void handleServe3(PipelineMessage* msg);
-    virtual void scheduleThirdStageProcessingCompletion(PipelineMessage* srcMsg);
-    virtual simtime_t getServiceDelay(int threadId) const;
-
-  private:
-    double meanServiceTime;
-
-};
-
-}; // namespace
-
-#endif
+packet PipelineMessage {
+    long requestId = 0;
+    int clientId = 0;
+    int threadId = 0;
+    simtime_t arrivalFirst = SIMTIME_ZERO;
+    simtime_t arrivalSecond = SIMTIME_ZERO;
+    simtime_t arrivalThird = SIMTIME_ZERO;
+}

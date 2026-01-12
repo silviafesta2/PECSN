@@ -21,14 +21,12 @@ simple SecondStage
         double meanServiceTime = default(10);
         double stdServiceTime = default(1);
         bool lognormalServiceTime = default(true);
-		@signal[queueSize];
-		@statistic[queueSize](source=queueSize; record=vector, mean, max, timeavg);
-		@signal[partialRequestTime];
-		@statistic[partialRequestTime](source=partialRequestTime; record=vector);
+		@signal[queueSize2];
+		@statistic[queueSize2](source=queueSize2; record=vector, mean, max, timeavg);
+		@signal[partialResponseTime2];
+		@statistic[partialResponseTime2](source=partialResponseTime2; record=vector);
 
     gates:
         input in;
-        input endReqIn;
         output out;
-        output endReqOut;
 }
